@@ -59,10 +59,13 @@ export default function FlipCard({ card, isOpen, onClose, onRevealed }: FlipCard
               className="relative w-full h-full preserve-3d"
               animate={{ rotateY: flipped ? 180 : 0 }}
               transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
-              style={{ transformStyle: "preserve-3d" }}
+              style={{ transformStyle: "preserve-3d", WebkitTransformStyle: "preserve-3d" }}
             >
-              <div className="absolute inset-0 backface-hidden rounded-2xl bg-gradient-to-br from-amber-900/90 via-amber-800/80 to-amber-950/90 border border-amber-500/30 shadow-2xl shadow-amber-900/20 flex flex-col items-center justify-center p-8 text-center overflow-hidden">
-                {isPhoto ? (
+              <div
+                className="absolute inset-0 rounded-2xl bg-gradient-to-br from-amber-900/90 via-amber-800/80 to-amber-950/90 border border-amber-500/30 shadow-2xl shadow-amber-900/20 flex flex-col items-center justify-center p-8 text-center"
+                style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
+              >
+                {isPhoto && (
                   <Image
                     src={card.image}
                     alt={card.title}
@@ -70,7 +73,8 @@ export default function FlipCard({ card, isOpen, onClose, onRevealed }: FlipCard
                     className="object-cover rounded-2xl"
                     sizes="(max-width: 640px) 90vw, 384px"
                   />
-                ) : (
+                )}
+                {!isPhoto && (
                   <span className="text-5xl mb-4">{card.emoji}</span>
                 )}
                 <h2 className={`text-2xl font-semibold text-amber-100 mb-2 relative z-10 ${isPhoto ? "drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]" : "shimmer-text"}`}>
@@ -81,8 +85,8 @@ export default function FlipCard({ card, isOpen, onClose, onRevealed }: FlipCard
               </div>
 
               <div
-                className="absolute inset-0 backface-hidden rounded-2xl bg-gradient-to-br from-amber-100 via-amber-50 to-amber-100 border border-amber-300/50 shadow-2xl shadow-amber-500/10 flex flex-col items-center justify-center p-8 text-center"
-                style={{ transform: "rotateY(180deg)" }}
+                className="absolute inset-0 rounded-2xl bg-gradient-to-br from-amber-100 via-amber-50 to-amber-100 border border-amber-300/50 shadow-2xl shadow-amber-500/10 flex flex-col items-center justify-center p-8 text-center"
+                style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
               >
                 <span className="text-4xl mb-3">❤️</span>
                 <p className="text-amber-950 leading-relaxed text-sm italic font-serif whitespace-pre-line max-h-[60%] overflow-y-auto px-2">
