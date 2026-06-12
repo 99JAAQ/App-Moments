@@ -16,6 +16,10 @@ export default function CardGrid({ onCardRevealed }: CardGridProps) {
   const selectedCard = cards.find((c) => c.id === selectedCardId) ?? null;
 
   useEffect(() => {
+    const stored = localStorage.getItem("app-experiencia-cards");
+    if (stored) {
+      try { setCards(JSON.parse(stored)); return; } catch {}
+    }
     fetch("/api/cards")
       .then((r) => r.json())
       .then(setCards)

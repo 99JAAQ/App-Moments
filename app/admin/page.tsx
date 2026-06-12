@@ -64,6 +64,10 @@ export default function AdminPage() {
   const fileInputRefs = useRef<Map<string, HTMLInputElement>>(new Map());
 
   useEffect(() => {
+    const stored = localStorage.getItem("app-experiencia-cards");
+    if (stored) {
+      try { setCards(JSON.parse(stored)); return; } catch {}
+    }
     fetch("/api/cards")
       .then((r) => r.json())
       .then(setCards)
@@ -71,10 +75,7 @@ export default function AdminPage() {
   }, []);
 
   useEffect(() => {
-    fetch("/api/surprise")
-      .then((r) => r.json())
-      .then((d: { active: boolean }) => setSurpriseActive(d.active))
-      .catch(() => {});
+    setSurpriseActive(localStorage.getItem("app-experiencia-surprise") === "true");
   }, []);
 
   async function handleFileUpload(cardId: string, e: React.ChangeEvent<HTMLInputElement>) {
@@ -102,38 +103,28 @@ export default function AdminPage() {
     e.target.value = "";
   }
 
-  async function toggleSurprise() {
-    setSaving(true);
+  function toggleSurprise() {
     const newVal = !surpriseActive;
-    const res = await fetch("/api/surprise", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ active: newVal }),
-    });
-    if (res.ok) {
-      setSurpriseActive(newVal);
-      setStatus(newVal ? "✓ Sorpresa activada" : "✓ Sorpresa desactivada");
-    } else {
-      setStatus("✗ Error");
-    }
-    setSaving(false);
+    setSurpriseActive(newVal);
+    localStorage.setItem("app-experiencia-surprise", String(newVal));
+    setStatus(newVal ? "✓ Sorpresa activada" : "✓ Sorpresa desactivada");
     setTimeout(() => setStatus(""), 3000);
   }
 
   async function save(allCards: AdminCard[]) {
     setSaving(true);
-    setStatus("Guardando...");
-    const res = await fetch("/api/cards", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(allCards),
-    });
-    if (res.ok) {
-      setStatus("✓ Guardado");
-      setCards(allCards);
-    } else {
-      setStatus("✗ Error al guardar");
-    }
+    setCards(allCards);
+    localStorage.setItem("app-experiencia-cards", JSON.stringify(allCards));
+    setStatus("✓ Guardado");
+
+    try {
+      await fetch("/api/cards", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(allCards),
+      });
+    } catch {}
+
     setSaving(false);
     setTimeout(() => setStatus(""), 3000);
   }

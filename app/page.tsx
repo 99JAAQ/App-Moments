@@ -38,7 +38,6 @@ export default function Home() {
   const [showSurprise, setShowSurprise] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [particleStyles, setParticleStyles] = useState<{ left: string; delay: string; duration: string }[]>([]);
-  const surpriseCheckedRef = useRef(false);
   const lineDoneRef = useRef(false);
   const revealedRef = useRef<Set<string>>(loadRevealedFromStorage());
 
@@ -47,6 +46,18 @@ export default function Home() {
     setMounted(true);
     setParticleStyles(generateParticleStyles());
     /* eslint-enable react-hooks/set-state-in-effect */
+  }, []);
+
+  useEffect(() => {
+    function checkSurprise() {
+      if (localStorage.getItem("app-experiencia-surprise") === "true") {
+        localStorage.removeItem("app-experiencia-surprise");
+        setShowSurprise(true);
+      }
+    }
+    checkSurprise();
+    const interval = setInterval(checkSurprise, 3000);
+    return () => clearInterval(interval);
   }, []);
 
   const handleCardRevealed = useCallback((cardId: string) => {
@@ -71,15 +82,6 @@ export default function Home() {
   }, [currentLine]);
 
   function handleEnter() {
-    if (!surpriseCheckedRef.current) {
-      surpriseCheckedRef.current = true;
-      fetch("/api/surprise")
-        .then((r) => r.json())
-        .then((data) => {
-          if (data.active) setShowSurprise(true);
-        })
-        .catch(() => {});
-    }
     setEntered(true);
   }
 
