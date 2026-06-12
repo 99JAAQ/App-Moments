@@ -1,0 +1,57 @@
+[
+  {
+    "id": "necklace",
+    "title": "Tu Regalo",
+    "subtitle": "Toca para revelar",
+    "message": "Cuando vi este collar pensé que sería bonito que te acompañara incluso cuando yo no pueda hacerlo.\n\nNo es el valor del regalo lo que importa, sino el significado que quiero darle.\n\nGracias por cada detalle, por tu tiempo y por permitirme conocerte un poco más cada día.",
+    "unlocked": true,
+    "unlockDate": "",
+    "type": "necklace",
+    "emoji": "💎",
+    "image": ""
+  },
+  {
+    "id": "memory-1",
+    "title": "Un secreto...",
+    "subtitle": "",
+    "message": "Todavía recuerdo las mariposas cuando te vi llegar. El mundo se detuvo y nada más importaba, solo tú.",
+    "unlocked": false,
+    "unlockDate": "",
+    "type": "standard",
+    "emoji": "🌹",
+    "image": ""
+  },
+  {
+    "id": "memory-2",
+    "title": "Algo nuestro",
+    "subtitle": "",
+    "message": "Cada letra me recuerda a ti. Cada nota lleva un pedacito de nuestra historia de amor que solo nosotros entendemos.",
+    "unlocked": false,
+    "unlockDate": "",
+    "type": "standard",
+    "emoji": "🎵",
+    "image": ""
+  },
+  {
+    "id": "memory-3",
+    "title": "Palabras guardadas",
+    "subtitle": "",
+    "message": "Tienes una forma de hacer que los momentos comunes se sientan mágicos. Nunca olvides lo extraordinaria que eres para mí.",
+    "unlocked": false,
+    "unlockDate": "",
+    "type": "standard",
+    "emoji": "💌",
+    "image": ""
+  },
+  {
+    "id": "memory-4",
+    "title": "Pronto lo sabrás",
+    "subtitle": "",
+    "message": "No puedo esperar por todas las aventuras que nos esperan. Cada amanecer a tu lado es un regalo que nunca daré por sentado.",
+    "unlocked": false,
+    "unlockDate": "",
+    "type": "standard",
+    "emoji": "✨",
+    "image": ""
+  }
+]
