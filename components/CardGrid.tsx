@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import type { Card } from "@/data/cards";
 import FlipCard from "@/components/FlipCard";
-import Image from "next/image";
 
 interface CardGridProps {
   onCardRevealed: (cardId: string) => void;
@@ -74,17 +73,7 @@ export default function CardGrid({ onCardRevealed }: CardGridProps) {
                 }
               `}
             >
-              {card.type === "photo" && card.image ? (
-                <Image
-                  src={card.image}
-                  alt={card.title}
-                  fill
-                  className="object-cover opacity-60"
-                  sizes="(max-width: 768px) 50vw, 200px"
-                />
-              ) : (
-                <span className="text-3xl mb-2 relative z-10">{card.emoji}</span>
-              )}
+              <span className="text-3xl mb-2 relative z-10">{card.emoji}</span>
               <h3
                 className={`font-semibold text-sm relative z-10 ${
                   card.unlocked ? "text-amber-100 shimmer-text" : "text-zinc-500"

@@ -65,34 +65,35 @@ export default function FlipCard({ card, isOpen, onClose, onRevealed }: FlipCard
                 className="absolute inset-0 rounded-2xl bg-gradient-to-br from-amber-900/90 via-amber-800/80 to-amber-950/90 border border-amber-500/30 shadow-2xl shadow-amber-900/20 flex flex-col items-center justify-center p-8 text-center"
                 style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
               >
-                {isPhoto && (
+                <span className="text-5xl mb-4">{card.emoji}</span>
+                <h2 className="text-2xl font-semibold text-amber-100 mb-2 shimmer-text">
+                  {card.title}
+                </h2>
+                <p className="text-amber-300/80 text-sm">{card.subtitle}</p>
+                <p className="text-amber-400/50 text-xs mt-6">Toca para voltear</p>
+              </div>
+
+              <div
+                className="absolute inset-0 rounded-2xl bg-gradient-to-br from-amber-100 via-amber-50 to-amber-100 border border-amber-300/50 shadow-2xl shadow-amber-500/10 flex flex-col items-center justify-center p-8 text-center overflow-hidden"
+                style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
+              >
+                {isPhoto ? (
                   <Image
                     src={card.image}
                     alt={card.title}
                     fill
-                    className="object-cover rounded-2xl"
+                    className="object-cover"
                     sizes="(max-width: 640px) 90vw, 384px"
                   />
+                ) : (
+                  <>
+                    <span className="text-4xl mb-3">❤️</span>
+                    <p className="text-amber-950 leading-relaxed text-sm italic font-serif whitespace-pre-line max-h-[60%] overflow-y-auto px-2">
+                      {card.message}
+                    </p>
+                    <p className="text-amber-700/50 text-xs mt-8">Toca para regresar</p>
+                  </>
                 )}
-                {!isPhoto && (
-                  <span className="text-5xl mb-4">{card.emoji}</span>
-                )}
-                <h2 className={`text-2xl font-semibold text-amber-100 mb-2 relative z-10 ${isPhoto ? "drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]" : "shimmer-text"}`}>
-                  {card.title}
-                </h2>
-                <p className="text-amber-300/80 text-sm relative z-10">{card.subtitle}</p>
-                <p className="text-amber-400/50 text-xs mt-6 relative z-10">Toca para voltear</p>
-              </div>
-
-              <div
-                className="absolute inset-0 rounded-2xl bg-gradient-to-br from-amber-100 via-amber-50 to-amber-100 border border-amber-300/50 shadow-2xl shadow-amber-500/10 flex flex-col items-center justify-center p-8 text-center"
-                style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
-              >
-                <span className="text-4xl mb-3">❤️</span>
-                <p className="text-amber-950 leading-relaxed text-sm italic font-serif whitespace-pre-line max-h-[60%] overflow-y-auto px-2">
-                  {card.message}
-                </p>
-                <p className="text-amber-700/50 text-xs mt-8">Toca para regresar</p>
               </div>
             </motion.div>
           </div>
