@@ -81,27 +81,29 @@ export default function CardGrid({ onCardRevealed }: CardGridProps) {
               >
                 {card.title}
               </h3>
-              {card.unlocked && card.subtitle && (
+              {card.subtitle && (
                 <p className="text-xs text-zinc-500 mt-1 relative z-10">{card.subtitle}</p>
               )}
 
               {!card.unlocked && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/30 rounded-2xl z-20">
-                  <div className="flex flex-col items-center gap-1">
-                    <svg
-                      className="w-6 h-6 text-zinc-600"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={1.5}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
-                      />
-                    </svg>
-                  </div>
+                <div className="absolute inset-0 flex items-center justify-center bg-black/20 rounded-2xl z-20">
+                  <motion.div
+                    className="wax-seal"
+                    whileHover={{ scale: 1.08 }}
+                    whileTap={{ scale: 0.95 }}
+                    animate={{ boxShadow: [
+                      "0 4px 12px rgba(139, 0, 0, 0.35)",
+                      "0 6px 18px rgba(139, 0, 0, 0.5)",
+                      "0 4px 12px rgba(139, 0, 0, 0.35)",
+                    ] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    <span className="wax-seal-inner">
+                      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                      </svg>
+                    </span>
+                  </motion.div>
                 </div>
               )}
             </div>
