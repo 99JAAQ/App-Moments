@@ -73,7 +73,9 @@ export default function CardGrid({ onCardRevealed }: CardGridProps) {
                 }
               `}
             >
-              <span className="text-3xl mb-2 relative z-10">{card.emoji}</span>
+              <span className={`text-3xl mb-2 relative z-10 ${!card.unlocked ? "opacity-20" : ""}`}>
+              {card.emoji}
+            </span>
               <h3
                 className={`font-semibold text-sm relative z-10 ${
                   card.unlocked ? "text-amber-100 shimmer-text" : "text-zinc-500"
@@ -86,7 +88,7 @@ export default function CardGrid({ onCardRevealed }: CardGridProps) {
               )}
 
               {!card.unlocked && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/20 rounded-2xl z-20">
+                <div className="absolute inset-x-0 top-0 flex items-start justify-center pt-3 z-20 pointer-events-none">
                   <motion.div
                     className="wax-seal"
                     whileHover={{ scale: 1.08 }}
@@ -105,6 +107,9 @@ export default function CardGrid({ onCardRevealed }: CardGridProps) {
                     </span>
                   </motion.div>
                 </div>
+              )}
+              {!card.unlocked && (
+                <div className="absolute inset-0 bg-black/10 rounded-2xl z-10 pointer-events-none" />
               )}
             </div>
           </motion.div>

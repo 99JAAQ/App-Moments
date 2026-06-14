@@ -156,8 +156,8 @@ body {
 
 /* ── Wax seal ── */
 .wax-seal {
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   background: radial-gradient(circle at 30% 30%, #c62828, #8b0000 60%, #5c0000);
   display: flex;
