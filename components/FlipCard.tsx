@@ -25,7 +25,7 @@ function StarRain({ show }: { show: boolean }) {
   return (
     <AnimatePresence>
       {show && (
-        <div className="absolute inset-0 pointer-events-none overflow-hidden z-30" aria-hidden="true">
+        <div className="w-full h-full pointer-events-none overflow-hidden" aria-hidden="true">
           {starData.map((s) => (
             <motion.div
               key={s.id}
@@ -140,7 +140,11 @@ export default function FlipCard({ card, isOpen, onClose, onRevealed }: FlipCard
             exit={{ opacity: 0 }}
           />
 
-          {isSpecial && flipped && <StarRain show={flipped} />}
+          {isSpecial && flipped && (
+            <div className="absolute inset-0 pointer-events-none overflow-hidden z-30">
+              <StarRain show={flipped} />
+            </div>
+          )}
 
           <div
             className="relative w-full max-w-sm max-h-[85vh] aspect-[3/4] cursor-pointer perspective-1000"
