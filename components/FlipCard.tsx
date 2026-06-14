@@ -12,8 +12,98 @@ interface FlipCardProps {
   onRevealed: () => void;
 }
 
+const starData = Array.from({ length: 30 }, (_, i) => ({
+  id: i,
+  x: Math.random() * 100,
+  delay: Math.random() * 1.5,
+  size: 4 + Math.random() * 8,
+  drift: (Math.random() - 0.5) * 120,
+  duration: 1.5 + Math.random() * 2,
+}));
+
+function StarRain({ show }: { show: boolean }) {
+  return (
+    <AnimatePresence>
+      {show && (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden z-30" aria-hidden="true">
+          {starData.map((s) => (
+            <motion.div
+              key={s.id}
+              className="absolute rounded-full"
+              style={{
+                left: `${s.x}%`,
+                width: s.size,
+                height: s.size,
+                background: "radial-gradient(circle, #fbbf24, #f59e0b 40%, transparent 70%)",
+              }}
+              initial={{ y: -20, opacity: 1, x: 0 }}
+              animate={{
+                y: "105%",
+                opacity: [1, 1, 0],
+                x: s.drift,
+              }}
+              exit={{ opacity: 0 }}
+              transition={{
+                duration: s.duration,
+                delay: s.delay,
+                ease: "easeIn",
+              }}
+            />
+          ))}
+        </div>
+      )}
+    </AnimatePresence>
+  );
+}
+
+function Typewriter({ text, onDone }: { text: string; onDone?: () => void }) {
+  const [displayed, setDisplayed] = useState("");
+  const [done, setDone] = useState(false);
+  const [cursor, setCursor] = useState(true);
+  const indexRef = useRef(0);
+
+  useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect */
+    setDisplayed("");
+    setDone(false);
+    /* eslint-enable react-hooks/set-state-in-effect */
+    indexRef.current = 0;
+  }, [text]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      indexRef.current += 1;
+      setDisplayed(text.slice(0, indexRef.current));
+      if (indexRef.current >= text.length) {
+        clearInterval(interval);
+        setDone(true);
+        onDone?.();
+      }
+    }, 30);
+    return () => clearInterval(interval);
+  }, [text, onDone]);
+
+  useEffect(() => {
+    const blink = setInterval(() => setCursor((c) => !c), 530);
+    return () => clearInterval(blink);
+  }, []);
+
+  return (
+    <span className="whitespace-pre-line">
+      {displayed}
+      {!done && (
+        <span
+          className="inline-block w-0.5 h-4 bg-amber-800 ml-0.5 align-middle transition-opacity"
+          style={{ opacity: cursor ? 1 : 0 }}
+        />
+      )}
+    </span>
+  );
+}
+
 export default function FlipCard({ card, isOpen, onClose, onRevealed }: FlipCardProps) {
   const [flipped, setFlipped] = useState(false);
+  const [typingDone, setTypingDone] = useState(false);
   const revealedRef = useRef(false);
 
   useEffect(() => {
@@ -25,10 +115,12 @@ export default function FlipCard({ card, isOpen, onClose, onRevealed }: FlipCard
 
   function handleClose() {
     setFlipped(false);
+    setTypingDone(false);
     onClose();
   }
 
   const isPhoto = card.type === "photo" && card.image;
+  const isSpecial = card.type === "necklace";
 
   return (
     <AnimatePresence>
@@ -47,6 +139,8 @@ export default function FlipCard({ card, isOpen, onClose, onRevealed }: FlipCard
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           />
+
+          {isSpecial && flipped && <StarRain show={flipped} />}
 
           <div
             className="relative w-full max-w-sm max-h-[85vh] aspect-[3/4] cursor-pointer perspective-1000"
@@ -88,10 +182,20 @@ export default function FlipCard({ card, isOpen, onClose, onRevealed }: FlipCard
                 ) : (
                   <>
                     <span className="text-4xl mb-3">❤️</span>
-                    <p className="text-amber-950 leading-relaxed text-sm italic font-serif whitespace-pre-line max-h-[60%] overflow-y-auto px-2">
-                      {card.message}
+                    <p className="text-amber-950 leading-relaxed text-sm italic font-serif max-h-[60%] overflow-y-auto px-2">
+                      {flipped ? (
+                        <Typewriter text={card.message} onDone={() => setTypingDone(true)} />
+                      ) : null}
                     </p>
-                    <p className="text-amber-700/50 text-xs mt-8">Toca para regresar</p>
+                    {typingDone && (
+                      <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="text-amber-700/50 text-xs mt-8"
+                      >
+                        Toca para regresar
+                      </motion.p>
+                    )}
                   </>
                 )}
               </div>

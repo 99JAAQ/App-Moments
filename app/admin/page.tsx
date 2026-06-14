@@ -66,7 +66,11 @@ export default function AdminPage() {
   useEffect(() => {
     const stored = localStorage.getItem("app-experiencia-cards");
     if (stored) {
-      try { setCards(JSON.parse(stored)); return; } catch {}
+      try {
+        /* eslint-disable-next-line react-hooks/set-state-in-effect */
+        setCards(JSON.parse(stored));
+        return;
+      } catch {}
     }
     fetch("/api/cards")
       .then((r) => r.json())
@@ -75,6 +79,7 @@ export default function AdminPage() {
   }, []);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setSurpriseActive(localStorage.getItem("app-experiencia-surprise") === "true");
   }, []);
 
@@ -127,6 +132,23 @@ export default function AdminPage() {
 
     setSaving(false);
     setTimeout(() => setStatus(""), 3000);
+  }
+
+  function toggleUnlock(card: AdminCard) {
+    const updated = cards.map((c) =>
+      c.id === card.id ? { ...c, unlocked: !c.unlocked } : c
+    );
+    if (!card.unlocked) {
+      try {
+        const raw = localStorage.getItem("app-experiencia-newly-unlocked");
+        const list: string[] = raw ? JSON.parse(raw) : [];
+        if (!list.includes(card.id)) {
+          list.push(card.id);
+          localStorage.setItem("app-experiencia-newly-unlocked", JSON.stringify(list));
+        }
+      } catch {}
+    }
+    save(updated);
   }
 
   function updateCard(id: string, field: keyof AdminCard, value: string | boolean) {
@@ -268,7 +290,7 @@ export default function AdminPage() {
 
                   <div className="flex items-center gap-1 shrink-0" onClick={(e) => e.stopPropagation()}>
                     <button
-                      onClick={() => save(cards.map((c) => c.id === card.id ? { ...c, unlocked: !c.unlocked } : c))}
+                      onClick={() => toggleUnlock(card)}
                       className={`p-1.5 sm:p-2 rounded-lg text-xs font-medium transition-colors ${
                         card.unlocked
                           ? "bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20"
