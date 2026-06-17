@@ -172,7 +172,7 @@ export default function FlipCard({ card, isOpen, onClose, onRevealed }: FlipCard
               </div>
 
               <div
-                className="absolute inset-0 rounded-2xl bg-gradient-to-br from-amber-100 via-amber-50 to-amber-100 border border-amber-300/50 shadow-2xl shadow-amber-500/10 flex flex-col items-center justify-center p-8 text-center overflow-hidden"
+                className="absolute inset-0 rounded-2xl bg-gradient-to-br from-amber-100 via-amber-50 to-amber-100 border border-amber-300/50 shadow-2xl shadow-amber-500/10 flex flex-col items-center p-6 sm:p-8 text-center overflow-hidden"
                 style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
               >
                 {isPhoto ? (
@@ -185,17 +185,22 @@ export default function FlipCard({ card, isOpen, onClose, onRevealed }: FlipCard
                   />
                 ) : (
                   <>
-                    <span className="text-4xl mb-3">❤️</span>
-                    <p className="text-amber-950 leading-relaxed text-sm italic font-serif max-h-[60%] overflow-y-auto px-2">
-                      {flipped ? (
-                        <Typewriter text={card.message} onDone={() => setTypingDone(true)} />
-                      ) : null}
-                    </p>
+                    <span className="text-4xl mb-3 shrink-0">❤️</span>
+                    <div
+                      className="flex-1 min-h-0 w-full overflow-y-auto px-2"
+                      style={{ overscrollBehavior: "contain", WebkitOverflowScrolling: "touch" }}
+                    >
+                      <p className="text-amber-950 leading-relaxed text-sm italic font-serif whitespace-pre-line pb-2">
+                        {flipped ? (
+                          <Typewriter text={card.message} onDone={() => setTypingDone(true)} />
+                        ) : null}
+                      </p>
+                    </div>
                     {typingDone && (
                       <motion.p
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="text-amber-700/50 text-xs mt-8"
+                        className="text-amber-700/50 text-xs mt-3 shrink-0"
                       >
                         Toca para regresar
                       </motion.p>
